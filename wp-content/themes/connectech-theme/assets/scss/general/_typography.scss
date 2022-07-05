@@ -1,0 +1,48 @@
+/*--------------------------------------------------------------
+# Typography
+--------------------------------------------------------------*/
+
+h1 {
+	font-size: $font-size-h1;
+}
+h2 {
+	font-size: $font-size-h2;
+}
+h3 {
+	font-size: $font-size-h3;
+}
+h4 {
+	font-size: $font-size-h4;
+}
+h5 {
+	font-size: $font-size-h5;
+}
+h6 {
+	font-size: $font-size-h6;
+}
+
+/*--------------------------------------------------------------
+# Section Title and Subtitle
+--------------------------------------------------------------*/
+.section-header {
+	width: 100%;
+	padding: 25px 15px 50px;
+	text-align: center;
+
+	@include max-mq($sm) {
+		padding: 25px 30px 50px;
+		text-align: center;
+	}
+}
+
+.section-title {
+	font-size: clamp(36px, 6vw, 56px);
+	font-weight: 600;
+	margin: 0;
+}
+
+.section-subtitle {
+	font-size: clamp(16px, 3vw, 26px);
+	font-weight: 400;
+	margin: 0 0 5px;
+}

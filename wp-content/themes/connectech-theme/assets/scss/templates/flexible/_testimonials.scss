@@ -1,0 +1,133 @@
+section.testimonials {
+    padding: 25px 0 0;
+    background-color: $yellow;
+
+    @include min-mq($md) {
+        margin-top: 70px;
+    }
+
+    .testimonials__row {
+        position: relative;
+        padding-top: 45px;
+        padding-bottom: 45px;
+        margin-top: -115px;
+
+        @include max-mq($sm) {
+            padding: 45px 30px 17px 30px;
+        }
+
+        // Testimonial side
+        .testimonials__side--wrap {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            margin-top: 90px;
+
+            @include max-mq($md) {
+                margin-bottom: 30px;
+            }
+
+            .testimonials__side {
+
+                .testimonials__side-text {
+                    font-size: 30px;
+                    font-weight: bold;
+                    line-height: 38px;
+                    padding: 5px 65px 35px 0;
+
+                    @include max-mq($md) {
+                        margin: 0;
+                    }
+                }
+
+            }
+
+        }
+
+        // Testimonial content
+        .testimonials__content-wrap {
+            position: relative;
+            // top: -90px;
+
+            @include max-mq($md) {
+                top: -60px;
+            }
+        }
+
+        .testimonial__wrap {
+            padding-top: 90px;
+
+            .testimonial__student {
+                display: flex;
+
+                @media screen and (max-width: 575px) {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                .testimonials__content {
+                    background-color: $yellow;
+
+                    .testimonials__student-testimonial {
+                        position: relative;
+                        line-height: 25px;
+                        margin-bottom: 25px;
+
+                        .testimonials__student-testimonial--text {
+
+                            &::before {
+                                content: "‘‘";
+                                display: block;
+                                width: 70px;
+                                height: 70px;
+                                font-family: Heebo;
+                                font-weight: 400;
+                                font-size: 250px;
+                                line-height: 1;
+                                color: rgb(0, 0, 0);
+                                letter-spacing: -13px;
+                                position: absolute;
+                                z-index: 1;
+                                top: -35px;
+                                left: -23px;
+                                opacity: 0.1;
+                            }
+
+                        }
+                    }
+
+                    .testimonials__student-name {
+                        .testimonials__student-name--text {
+                            font-weight: bold;
+                        }
+                    }
+
+                }
+
+                .testimonials__student-image {
+                    width: 260px;
+                    min-height: 328px;
+                    margin-top: -90px;
+                    margin-left: 15px;
+
+                    & img {
+                        min-width: 260px;
+                        width: 100%;
+                        max-height: 328px;
+                        height: 100%;
+                    }
+
+                    @media screen and (max-width: 575px) {
+                        margin: 0;
+                    }
+
+                    @include max-mq($ip) {
+                        width: 100%;
+                    }
+                }
+
+            }
+        }
+    }
+}

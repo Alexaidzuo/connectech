@@ -1,0 +1,45 @@
+@import "../../../node_modules/slick-carousel/slick/slick.scss";
+
+.slick-slider {
+    position: inherit;
+}
+
+.slick-arrow {
+    position: absolute;
+    width: 23px;
+    height: 23px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    color: rgba($gray, 0.7);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 50;
+
+    background-color: $white;
+    color: $black;
+    padding: 25px;
+    font-size: 28px;
+
+    &:hover {
+        background-color: $black;
+        color: $white;
+    }
+
+    &.icon-angle-right {
+        left: 60px;
+    }
+
+    &.icon-angle-left {
+        left: 0;
+    }
+
+    @include max-mq($md) {
+        top: 0 !important;
+        right: 0;
+    }
+}

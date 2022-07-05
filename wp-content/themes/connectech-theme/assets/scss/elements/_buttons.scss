@@ -1,0 +1,25 @@
+.button{
+	&.primary{
+		background-color: $primary-color;
+	}
+
+	&.secondary{
+		background-color: $secondary-color;
+	}
+
+	&.tertiary{
+		background-color: $tertiary-color;
+	}
+}
+
+.team-members__button {
+	color: $white;
+	background-color: $teal;
+	padding: 5px 25px;
+	line-height: 30px;
+	transition: $dur $ease;
+
+	&:hover {
+		background-color: #0bcfe9;
+	}
+}

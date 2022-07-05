@@ -1,0 +1,64 @@
+section.sponsors {
+    padding: 100px 0 25px;
+
+    .sponsors__row {
+
+        .sponsors__wrap {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            align-items: center;
+
+            .sponsor-logo__wrap {
+                padding: 15px;
+
+                .sponsors-logo {
+                    opacity: .5;
+                    transition: $dur $ease;
+
+                    &:hover {
+                        opacity: 1;
+                    }
+                }
+
+            }
+
+            @include max-mq($ip) {
+                flex-direction: column;
+            }
+
+        }
+
+    }
+
+    .partners__row {
+        margin-top: 35px;
+
+        .partners__wrap {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            align-items: center;
+
+            .partners-logo__wrap {
+                padding: 15px;
+
+                .partners-logo {
+                    opacity: .5;
+                    transition: $dur $ease;
+
+                    &:hover {
+                        opacity: 1;
+                    }
+                }
+
+            }
+
+            @include max-mq($ip) {
+                flex-direction: column;
+            }
+
+        }
+
+    }
+}
