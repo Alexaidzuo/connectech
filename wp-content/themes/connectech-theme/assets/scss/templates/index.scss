@@ -1,1 +1,6 @@
-@import 'flexible';
+@import 'flexible/index';
+@import 'template-parts/index';
+@import 'archives/index';
+
+// Single
+@import 'single-news';

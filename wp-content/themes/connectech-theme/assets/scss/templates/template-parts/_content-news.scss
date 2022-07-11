@@ -1,0 +1,49 @@
+.content-news {
+    margin-bottom: clamp(24px, 2.9282576867vw, 40px);
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &__thumbnail {
+        height: 220px;
+        margin-bottom: 16px;
+        transition: $dur $ease;
+        overflow: hidden;
+
+        &:hover {
+            img {
+                transform: scale(1.05);
+            }
+        }
+
+        @include max-mq($sm) {
+            height: 300px;
+        }
+
+        img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: $dur $ease;
+
+            @include max-mq($sm) {
+                height: 300px;
+            }
+        }
+    }
+
+    &__title {
+
+        a {
+            font-size: $font-size-22;
+            font-weight: 600;
+            color: $black;
+            transition: $dur $ease;
+
+            &:hover {
+                color: rgba($black, .7);
+            }
+        }
+    }
+}

@@ -1,5 +1,6 @@
 // Container widths
-$container-width: 1170px;
+$container-full: 2680px;
+$container-width: 1220px;
 $container-narrow-width: 990px;
 
 // Colors
@@ -9,12 +10,14 @@ $tertiary-color:	red;
 $white:				#ffffff;
 $black:				#000000;
 $gray:				#6e6f71;
+$gray-dark:         #333333;
 $teal:              #09b3c8;
 $teal-light:        #dfeeff;
 $yellow:            #fccf33;
 
 // Fonts
-$primary-font: 'Lato', sans-serif;
+// $primary-font: 'Lato', sans-serif;
+$primary-font: 'Open Sans', sans-serif;;
 $secondary-font: sans-serif;
 
 // Font Sizes
@@ -23,6 +26,7 @@ $font-size-small:	14px;
 $font-size-base:	16px;
 $font-size-large:	18px;
 $font-size-xlarge:	20px;
+$font-size-22:      22px;
 
 // Heading sizes
 $font-size-h1: 50px;
