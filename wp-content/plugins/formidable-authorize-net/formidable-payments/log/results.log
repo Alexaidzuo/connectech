@@ -1,0 +1,206 @@
+[05/03/2022 10:33am] No new Authorize.net eChecks found.
+[05/03/2022 10:33am] 0 subscriptions found to be processed.
+[05/04/2022 10:48am] No new Authorize.net eChecks found.
+[05/04/2022 10:48am] 0 subscriptions found to be processed.
+[05/04/2022 10:53am] No new Authorize.net eChecks found.
+[05/04/2022 10:53am] 0 subscriptions found to be processed.
+[05/05/2022 3:27pm] No new Authorize.net eChecks found.
+[05/05/2022 3:27pm] 0 subscriptions found to be processed.
+[05/09/2022 4:46pm] No new Authorize.net eChecks found.
+[05/09/2022 4:46pm] 0 subscriptions found to be processed.
+[05/24/2022 4:03pm] No new Authorize.net eChecks found.
+[05/24/2022 4:03pm] 0 subscriptions found to be processed.
+[07/08/2022 3:29pm] API response: Array
+(
+    [headers] => Requests_Utility_CaseInsensitiveDictionary Object
+        (
+            [data:protected] => Array
+                (
+                    [cache-control] => no-cache
+                    [pragma] => no-cache
+                    [content-type] => application/json; charset=utf-8
+                    [expires] => -1
+                    [x-opnet-transaction-trace] => f64f98ac-d9c2-4e03-9d64-05e917827c50-17492-5249
+                    [access-control-allow-credentials] => true
+                    [access-control-allow-headers] => x-requested-with,cache-control,content-type,origin,method, authorization
+                    [access-control-allow-methods] => GET,POST,OPTIONS,PUT,PATCH,DELETE
+                    [access-control-allow-origin] => https://developer.authorize.net
+                    [access-control-max-age] => 600
+                    [x-content-type-options] => nosniff
+                    [x-cnection] => close
+                    [date] => Fri, 08 Jul 2022 15:29:06 GMT
+                    [content-length] => 267
+                )
+
+        )
+
+    [body] => {
+  "status": 400,
+  "reason": "INVALID_DATA",
+  "message": "Field validation errors",
+  "correlationId": "57f9ea61-9496-4056-aae2-0e083a8e2f0e",
+  "details": [
+    {
+      "message": "Invalid Url entered. Only valid HTTP(s) Urls are supported."
+    }
+  ]
+}
+    [response] => Array
+        (
+            [code] => 400
+            [message] => Bad Request
+        )
+
+    [cookies] => Array
+        (
+        )
+
+    [filename] => 
+    [http_response] => WP_HTTP_Requests_Response Object
+        (
+            [response:protected] => Requests_Response Object
+                (
+                    [body] => {
+  "status": 400,
+  "reason": "INVALID_DATA",
+  "message": "Field validation errors",
+  "correlationId": "57f9ea61-9496-4056-aae2-0e083a8e2f0e",
+  "details": [
+    {
+      "message": "Invalid Url entered. Only valid HTTP(s) Urls are supported."
+    }
+  ]
+}
+                    [raw] => HTTP/1.1 400 Bad Request
+Cache-Control: no-cache
+Pragma: no-cache
+Content-Type: application/json; charset=utf-8
+Expires: -1
+X-OPNET-Transaction-Trace: f64f98ac-d9c2-4e03-9d64-05e917827c50-17492-5249
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Headers: x-requested-with,cache-control,content-type,origin,method, authorization
+Access-Control-Allow-Methods: GET,POST,OPTIONS,PUT,PATCH,DELETE
+Access-Control-Allow-Origin: https://developer.authorize.net
+Access-Control-Max-Age: 600
+X-Content-Type-Options: nosniff
+X-Cnection: close
+Date: Fri, 08 Jul 2022 15:29:06 GMT
+Content-Length: 267
+Connection: close
+
+{
+  "status": 400,
+  "reason": "INVALID_DATA",
+  "message": "Field validation errors",
+  "correlationId": "57f9ea61-9496-4056-aae2-0e083a8e2f0e",
+  "details": [
+    {
+      "message": "Invalid Url entered. Only valid HTTP(s) Urls are supported."
+    }
+  ]
+}
+                    [headers] => Requests_Response_Headers Object
+                        (
+                            [data:protected] => Array
+                                (
+                                    [cache-control] => Array
+                                        (
+                                            [0] => no-cache
+                                        )
+
+                                    [pragma] => Array
+                                        (
+                                            [0] => no-cache
+                                        )
+
+                                    [content-type] => Array
+                                        (
+                                            [0] => application/json; charset=utf-8
+                                        )
+
+                                    [expires] => Array
+                                        (
+                                            [0] => -1
+                                        )
+
+                                    [x-opnet-transaction-trace] => Array
+                                        (
+                                            [0] => f64f98ac-d9c2-4e03-9d64-05e917827c50-17492-5249
+                                        )
+
+                                    [access-control-allow-credentials] => Array
+                                        (
+                                            [0] => true
+                                        )
+
+                                    [access-control-allow-headers] => Array
+                                        (
+                                            [0] => x-requested-with,cache-control,content-type,origin,method, authorization
+                                        )
+
+                                    [access-control-allow-methods] => Array
+                                        (
+                                            [0] => GET,POST,OPTIONS,PUT,PATCH,DELETE
+                                        )
+
+                                    [access-control-allow-origin] => Array
+                                        (
+                                            [0] => https://developer.authorize.net
+                                        )
+
+                                    [access-control-max-age] => Array
+                                        (
+                                            [0] => 600
+                                        )
+
+                                    [x-content-type-options] => Array
+                                        (
+                                            [0] => nosniff
+                                        )
+
+                                    [x-cnection] => Array
+                                        (
+                                            [0] => close
+                                        )
+
+                                    [date] => Array
+                                        (
+                                            [0] => Fri, 08 Jul 2022 15:29:06 GMT
+                                        )
+
+                                    [content-length] => Array
+                                        (
+                                            [0] => 267
+                                        )
+
+                                )
+
+                        )
+
+                    [status_code] => 400
+                    [protocol_version] => 1.1
+                    [success] => 
+                    [redirects] => 0
+                    [url] => https://api.authorize.net/rest/v1/webhooks
+                    [history] => Array
+                        (
+                        )
+
+                    [cookies] => Requests_Cookie_Jar Object
+                        (
+                            [cookies:protected] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+            [filename:protected] => 
+            [data] => 
+            [headers] => 
+            [status] => 
+        )
+
+)
+
