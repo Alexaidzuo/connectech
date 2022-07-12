@@ -5,6 +5,7 @@ $ = require('jquery');
 const Navigation = require('./core/navigation');
 const example = require('./site/example');
 const Testimonials = require('./site/testimonials');
+const Nav = require('./site/nav');
 
 jQuery( function(){
 
@@ -21,7 +22,12 @@ jQuery( function(){
   /**
    * Initialize Testimonials slick slider
    */
-    Testimonials.init();
+  Testimonials.init();
+
+  /**
+   * Initialize Navigation slick slider
+   */
+  Nav.init();
 
 
 });

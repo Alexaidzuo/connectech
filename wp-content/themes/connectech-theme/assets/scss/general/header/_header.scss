@@ -1,5 +1,24 @@
 .site-header {
-    padding: 12px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: $white;
+    padding: 30px 0;
+    transition: $dur $ease;
+    z-index: 9999!important;
+
+    @include max-mq($mb) {
+        padding: 12px 0;
+    }
+
+    // Scroll site-header
+    &.scroll {
+        padding: 12px 0;
+        background-color: rgba($white, .75);
+        backdrop-filter: saturate(180%) blur(20px);
+        box-shadow: 0 0 24px rgba($black, .1);
+    }
 
     .container {
         max-width: $container-full;
@@ -21,4 +40,9 @@
             }
         }
     }
+}
+
+// WP Admin bar for logged user
+body.logged-in .site-header {
+    margin-top: 32px;
 }

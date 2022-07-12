@@ -53,6 +53,10 @@
 			}
 		}
 
+		.nav-search {
+			margin-left: 20px;
+		}
+
 		@include max-mq($responsive-toggle-breakpoint) {
 			background-color: $white;
 			position: fixed;
@@ -77,7 +81,7 @@
 
 				li {
 					display: block;
-					margin-left: 32px;
+					margin-left: 20px;
 					position: relative;
 					color: $black;
 					transition: $dur $ease;
@@ -129,6 +133,7 @@
 						position: relative;
 						font-size: 15px;
 						font-weight: 500;
+						text-transform: uppercase;
 						color: inherit;
 						width: 100%;
 

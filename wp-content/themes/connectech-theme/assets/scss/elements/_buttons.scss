@@ -14,12 +14,37 @@
 
 .team-members__button {
 	color: $white;
-	background-color: $teal;
+	background-color: rgba($teal, .7);
 	padding: 5px 25px;
 	line-height: 30px;
 	transition: $dur $ease;
 
 	&:hover {
-		background-color: #0bcfe9;
+		background-color: $teal;
 	}
+}
+
+// Navigation Button
+.nav-donate {
+	&:after {
+		display: none!important;
+	}
+
+	a {
+		display: inline-block;
+		padding: 12px 20px;
+		text-transform: uppercase;
+		background-color: rgba($teal, .7);
+    	color: $white!important;
+		border-radius: 3px;
+		transition: $dur $ease;
+
+		&:hover {
+			background-color: $teal;
+		}
+	}
+}
+
+.nav-search {
+	cursor: pointer;
 }

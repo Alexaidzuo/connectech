@@ -59,7 +59,10 @@
 						);
 
 						?>
+
+					<span class="nav-search"><?php echo file_get_contents(get_template_directory() . "/assets/icons/search-icon.svg"); ?></span>
 				</nav><!-- #site-navigation -->
+
 
 				<div class="menu-toggle-wrapper">
 					<a href='#' class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">

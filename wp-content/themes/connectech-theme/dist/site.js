@@ -169,6 +169,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		var Navigation = require('./core/navigation');
 		var example = require('./site/example');
 		var Testimonials = require('./site/testimonials');
+		var Nav = require('./site/nav');
 
 		jQuery(function () {
 
@@ -186,8 +187,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     * Initialize Testimonials slick slider
     */
 			Testimonials.init();
+
+			/**
+    * Initialize Navigation slick slider
+    */
+			Nav.init();
 		});
-	}, { "./core/navigation": 1, "./site/example": 3, "./site/testimonials": 5, "jquery": 6 }], 3: [function (require, module, exports) {
+	}, { "./core/navigation": 1, "./site/example": 3, "./site/nav": 5, "./site/testimonials": 6, "jquery": 7 }], 3: [function (require, module, exports) {
 		"use strict";
 
 		// const Global = require('./global');
@@ -367,6 +373,39 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	}, {}], 5: [function (require, module, exports) {
 		"use strict";
 
+		// const Global = require('./global');
+
+		// let	_this;
+
+		var _this = module.exports = {
+
+			/*-------------------------------------------------------------------------------
+   	# Cache dom and strings
+   -------------------------------------------------------------------------------*/
+			$dom: {
+				body: $('body'),
+				header: $('header.site-header')
+			},
+
+			vars: {},
+
+			/*-------------------------------------------------------------------------------
+   	# Initialize
+   -------------------------------------------------------------------------------*/
+			init: function init() {
+				$(window).scroll(function () {
+					if ($(window).scrollTop() > 170) {
+						$(".site-header").addClass("scroll");
+					} else if ($(window).scrollTop() < 170) {
+						$(".site-header").removeClass("scroll");
+					}
+				});
+			}
+
+		};
+	}, {}], 6: [function (require, module, exports) {
+		"use strict";
+
 		require("slick-carousel");
 
 		module.exports = {
@@ -408,7 +447,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				});
 			}
 		};
-	}, { "slick-carousel": 7 }], 6: [function (require, module, exports) {
+	}, { "slick-carousel": 8 }], 7: [function (require, module, exports) {
 		/*!
    * jQuery JavaScript Library v3.4.1
    * https://jquery.com/
@@ -10543,7 +10582,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 			return jQuery;
 		});
-	}, {}], 7: [function (require, module, exports) {
+	}, {}], 8: [function (require, module, exports) {
 		/*
        _ _      _       _
    ___| (_) ___| | __  (_)___
@@ -13297,4 +13336,4 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				return _;
 			};
 		});
-	}, { "jquery": 6 }] }, {}, [2]);
+	}, { "jquery": 7 }] }, {}, [2]);
