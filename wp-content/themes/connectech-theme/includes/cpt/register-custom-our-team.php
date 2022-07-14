@@ -1,8 +1,8 @@
 <?php
 
-function connectech_register_custom_team_member() {
-    $singular = 'Team Member'; // Book
-	$plural = 'Team Members';  // Books
+function connectech_register_custom_our_team() {
+    $singular = 'Our Team'; // Book
+	$plural = 'Our Team';  // Books
 
     $slug = str_replace( ' ', '-', strtolower( $singular ) );
 
@@ -37,4 +37,4 @@ function connectech_register_custom_team_member() {
     register_post_type( $slug, $args );
 }
 
-add_action( 'init', 'connectech_register_custom_team_member' );
+add_action( 'init', 'connectech_register_custom_our_team' );

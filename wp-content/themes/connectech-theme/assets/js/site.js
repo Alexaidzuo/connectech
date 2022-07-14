@@ -6,6 +6,7 @@ const Navigation = require('./core/navigation');
 const example = require('./site/example');
 const Testimonials = require('./site/testimonials');
 const Nav = require('./site/nav');
+const SmoothAchorScroll = require('./site/smoothAnchorScroll');
 
 jQuery( function(){
 
@@ -28,6 +29,11 @@ jQuery( function(){
    * Initialize Navigation slick slider
    */
   Nav.init();
+
+  /**
+   * Initialize Navigation slick slider
+   */
+   SmoothAchorScroll.init();
 
 
 });

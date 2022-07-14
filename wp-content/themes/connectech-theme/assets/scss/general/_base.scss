@@ -4,6 +4,7 @@ body {
   font-family: $primary-font;
   font-size: $font-size-large;
   padding-top: 112px;
+  scroll-behavior: smooth;
 
   @include max-mq($mb) {
     padding-top: 66px;

@@ -1,0 +1,54 @@
+.our-team {
+    // single left
+    &__sl {
+        position: relative;
+        margin-bottom: 25px;
+    }
+
+    &__sl-inner {
+        position: sticky;
+        top: 100px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__sl-social {
+        max-width: 500px;
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 15px;
+
+        i {
+            display: inline-block!important;
+            color: $black;
+            font-size: 28px;
+            margin: 0 15px;
+        }
+    }
+
+    // Other Team Members
+    &__other {
+        &-name {
+            font-size: 24px;
+            margin-bottom: 2px;
+
+            a {
+                color: $black;
+                transition: $dur-short $ease;
+
+                &:hover {
+                    color: rgba($teal, .7);
+                }
+            }
+        }
+
+        &-position {
+            font-size: $font-size-large;
+            font-weight: 400;
+            margin-top: 0;
+        }
+    }
+}

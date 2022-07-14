@@ -9,7 +9,7 @@
 
 get_header(); ?>
 
-<section class="news-archive">
+<section class="our-team-archive">
 
     <div class="container">
         <div class="row">
@@ -19,7 +19,7 @@ get_header(); ?>
                 the_archive_description('<div class="taxonomy-description">', '</div>');
                 ?>
 
-                <h6 class="page-white-header__subtitle">News from tech and bussiness world</h6>
+                <h6 class="page-white-header__subtitle">This is our dedicated team that creates amazing projects for a digitally connected world.</h6>
             </div>
         </div>
     </div>
@@ -41,7 +41,7 @@ get_header(); ?>
                     * If you want to override this in a child theme, then include a file
                     * called content-___.php (where ___ is the Post Format name) and that will be used instead.
                     */
-                get_template_part('template-parts/content', 'news');
+                get_template_part('template-parts/content', 'our-team');
                 ?>
 
             <?php endwhile; ?>

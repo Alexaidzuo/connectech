@@ -170,6 +170,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 		var example = require('./site/example');
 		var Testimonials = require('./site/testimonials');
 		var Nav = require('./site/nav');
+		var SmoothAchorScroll = require('./site/smoothAnchorScroll');
 
 		jQuery(function () {
 
@@ -192,8 +193,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     * Initialize Navigation slick slider
     */
 			Nav.init();
+
+			/**
+    * Initialize Navigation slick slider
+    */
+			SmoothAchorScroll.init();
 		});
-	}, { "./core/navigation": 1, "./site/example": 3, "./site/nav": 5, "./site/testimonials": 6, "jquery": 7 }], 3: [function (require, module, exports) {
+	}, { "./core/navigation": 1, "./site/example": 3, "./site/nav": 5, "./site/smoothAnchorScroll": 6, "./site/testimonials": 7, "jquery": 8 }], 3: [function (require, module, exports) {
 		"use strict";
 
 		// const Global = require('./global');
@@ -406,6 +412,60 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	}, {}], 6: [function (require, module, exports) {
 		"use strict";
 
+		// const Global = require('./global');
+
+		// let	_this;
+
+		var _this = module.exports = {
+
+			/*-------------------------------------------------------------------------------
+   	# Cache dom and strings
+   -------------------------------------------------------------------------------*/
+			$dom: {
+				body: $('body')
+			},
+
+			vars: {},
+
+			/*-------------------------------------------------------------------------------
+   	# Initialize
+   -------------------------------------------------------------------------------*/
+			init: function init() {
+
+				$("a").on('click', function (event) {
+					// Make sure this.hash has a value before overriding default behavior
+					if (this.hash !== "") {
+						// Prevent default anchor click behavior
+						//   event.preventDefault();
+						// Store hash
+						var hash = this.hash;
+						// Using jQuery's animate() method to add smooth page scroll
+						// The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+						$('html, body').animate({
+							scrollTop: $(hash).offset().top
+						}, 800, function () {
+							// Add hash (#) to URL when done scrolling (default click behavior)
+							window.location.hash = hash;
+						});
+					} // End if
+				});
+
+				if (window.location.hash) scroll(0, 0);
+				// takes care of some browsers issue
+				setTimeout(function () {
+					scroll(0, 0);
+				}, 1);
+				var urlHash = window.location.href.split("#")[1];
+				var headerHeight = $('#masthead').outerHeight();
+				if (urlHash && $('#' + urlHash).length) $('html,body').animate({
+					scrollTop: $('#' + urlHash).offset().top - headerHeight
+				}, 2000);
+			}
+
+		};
+	}, {}], 7: [function (require, module, exports) {
+		"use strict";
+
 		require("slick-carousel");
 
 		module.exports = {
@@ -447,7 +507,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				});
 			}
 		};
-	}, { "slick-carousel": 8 }], 7: [function (require, module, exports) {
+	}, { "slick-carousel": 9 }], 8: [function (require, module, exports) {
 		/*!
    * jQuery JavaScript Library v3.4.1
    * https://jquery.com/
@@ -10582,7 +10642,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 			return jQuery;
 		});
-	}, {}], 8: [function (require, module, exports) {
+	}, {}], 9: [function (require, module, exports) {
 		/*
        _ _      _       _
    ___| (_) ___| | __  (_)___
@@ -13336,4 +13396,4 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 				return _;
 			};
 		});
-	}, { "jquery": 7 }] }, {}, [2]);
+	}, { "jquery": 8 }] }, {}, [2]);
