@@ -4292,7 +4292,6 @@ section.team-members .team-member__member .team-member__image .team-member__soci
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
   opacity: 0;
   -webkit-transition: 350ms ease;
   -o-transition: 350ms ease;
@@ -4325,6 +4324,9 @@ section.team-members .team-member__member .team-member__image .team-member__soci
       -ms-transform: translate(0px, 20px);
           transform: translate(0px, 20px);
   opacity: 0;
+  -webkit-transition: 350ms ease;
+  -o-transition: 350ms ease;
+  transition: 350ms ease;
 }
 
 section.team-members .team-member__member .team-member__image:hover img {
