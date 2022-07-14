@@ -30,26 +30,9 @@
     }
 
     // Other Team Members
-    &__other {
-        &-name {
-            font-size: 24px;
-            margin-bottom: 2px;
-
-            a {
-                color: $black;
-                transition: $dur-short $ease;
-
-                &:hover {
-                    color: rgba($teal, .7);
-                }
-            }
-        }
-
-        &-position {
-            font-size: $font-size-large;
-            font-weight: 400;
-            margin-top: 0;
-            color: $gray;
+    .team-members {
+        .row {
+            justify-content: flex-start;
         }
     }
 }

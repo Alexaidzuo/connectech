@@ -4822,27 +4822,11 @@ section.sponsors .partners__row .partners__wrap .partners-logo__wrap .partners-l
   margin: 0 15px;
 }
 
-.our-team__other-name {
-  font-size: 24px;
-  margin-bottom: 2px;
-}
-
-.our-team__other-name a {
-  color: #000000;
-  -webkit-transition: 150ms ease;
-  -o-transition: 150ms ease;
-  transition: 150ms ease;
-}
-
-.our-team__other-name a:hover {
-  color: rgba(9, 179, 200, 0.7);
-}
-
-.our-team__other-position {
-  font-size: 18px;
-  font-weight: 400;
-  margin-top: 0;
-  color: #6e6f71;
+.our-team .team-members .row {
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
 }
 
 .section-single-news {
