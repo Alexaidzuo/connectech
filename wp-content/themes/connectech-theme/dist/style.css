@@ -4289,12 +4289,10 @@ section.team-members .team-member__member .team-member__image img {
 }
 
 section.team-members .team-member__member .team-member__image .team-member__social--wrap {
-  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  border: 8px solid #09b3c8;
   opacity: 0;
   -webkit-transition: 350ms ease;
   -o-transition: 350ms ease;
@@ -4302,34 +4300,31 @@ section.team-members .team-member__member .team-member__image .team-member__soci
 }
 
 section.team-members .team-member__member .team-member__image .team-member__social--wrap .team-member__social {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-justify-content: space-around;
-      -ms-flex-pack: distribute;
-          justify-content: space-around;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  width: 100%;
-  height: 100%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  padding: 16px 20px;
 }
 
-section.team-members .team-member__member .team-member__image .team-member__social--wrap .team-member__social .icon {
-  display: inline-block !important;
-  color: #ffffff;
-  padding: 10px 10px 7px;
-  border-radius: 100%;
-  background-color: rgba(9, 179, 200, 0.5);
-  -webkit-transition: 350ms ease;
-  -o-transition: 350ms ease;
-  transition: 350ms ease;
-}
-
-section.team-members .team-member__member .team-member__image .team-member__social--wrap .team-member__social .icon:hover {
-  background-color: #09b3c8;
+section.team-members .team-member__member .team-member__image .team-member__social--wrap .team-member__social a {
+  -webkit-transform: translate(0px, 20px);
+      -ms-transform: translate(0px, 20px);
+          transform: translate(0px, 20px);
+  opacity: 0;
 }
 
 section.team-members .team-member__member .team-member__image:hover img {
@@ -4337,25 +4332,43 @@ section.team-members .team-member__member .team-member__image:hover img {
       -ms-transform: scale(1.1);
           transform: scale(1.1);
   z-index: -1;
+  opacity: .2;
 }
 
 section.team-members .team-member__member .team-member__image:hover .team-member__social--wrap {
   opacity: 1;
-  background-color: rgba(0, 0, 0, 0.3);
+}
+
+section.team-members .team-member__member .team-member__image:hover .team-member__social a {
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #000000;
+  -webkit-transform: translate(0px, 0px);
+      -ms-transform: translate(0px, 0px);
+          transform: translate(0px, 0px);
+  opacity: 1;
 }
 
 section.team-members .team-member__member .team-member__name {
-  font-size: 20px;
-  font-weight: 400;
-  margin-bottom: 5px;
-  text-align: center;
+  font-size: 24px;
+  margin-bottom: 2px;
+}
+
+section.team-members .team-member__member .team-member__name a {
+  color: #000000;
+  -webkit-transition: 150ms ease;
+  -o-transition: 150ms ease;
+  transition: 150ms ease;
+}
+
+section.team-members .team-member__member .team-member__name a:hover {
+  color: rgba(9, 179, 200, 0.7);
 }
 
 section.team-members .team-member__member .team-member__position {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
-  margin: 5px 0 25px;
-  text-align: center;
+  margin-top: 0;
   color: #6e6f71;
 }
 
@@ -4829,6 +4842,7 @@ section.sponsors .partners__row .partners__wrap .partners-logo__wrap .partners-l
   font-size: 18px;
   font-weight: 400;
   margin-top: 0;
+  color: #6e6f71;
 }
 
 .section-single-news {

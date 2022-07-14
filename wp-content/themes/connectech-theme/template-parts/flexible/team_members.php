@@ -67,27 +67,27 @@ $button_url = get_sub_field( 'button_url' );
 
                                     <?php
                                     if($linkedin) : ?>
-                                        <a href="<?php echo $linkedin; ?>"><i class="icon icon-linkedin"></i></a>
+                                        <a href="<?php echo $linkedin; ?>">Linkedin</a>
                                     <?php endif; ?>
 
                                     <?php
                                     if($facebook) : ?>
-                                        <a href="<?php echo $facebook; ?>"><i class="icon icon-facebook"></i></a>
+                                        <a href="<?php echo $facebook; ?>">Facebook</i></a>
                                     <?php endif; ?>
 
                                     <?php
                                     if($twitter) : ?>
-                                        <a href="<?php echo $twitter; ?>"><i class="icon icon-twitter"></i></a>
+                                        <a href="<?php echo $twitter; ?>">Twitter</i></a>
                                     <?php endif; ?>
 
                                     <?php
                                     if($instagram) : ?>
-                                        <a href="<?php echo $instagram; ?>"><i class="icon icon-instagram"></i></a>
+                                        <a href="<?php echo $instagram; ?>">Instagram</a>
                                     <?php endif; ?>
 
                                     <?php
                                     if($email) : ?>
-                                        <a href="mailto:<?php echo $email; ?>"><i class="icon icon-email"></i></a>
+                                        <a href="mailto:<?php echo $email; ?>">Email</a>
                                     <?php endif; ?>
 
                                 <?php endwhile; ?>
@@ -97,7 +97,11 @@ $button_url = get_sub_field( 'button_url' );
                         </div>
                     </div>
 
-                    <h2 class="team-member__name"><?php the_title(); ?></h2>
+                    <h2 class="team-member__name">
+                        <a href="<?php the_permalink(); ?>">
+                            <?php the_title(); ?>
+                        </a>
+                    </h2>
 
                     <?php
                     if($position) : ?>

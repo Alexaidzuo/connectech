@@ -38,33 +38,28 @@ section.team-members {
             }
 
             .team-member__social--wrap {
-                position: absolute;
+                // position: absolute;
                 top: 0;
                 left: 0;
                 width: 100%;
                 height: 100%;
-                border: 8px solid $teal;
+                // border: 8px solid $teal;
                 opacity: 0;
                 transition: $dur $ease;
 
                 .team-member__social {
-                    display: flex;
-                    justify-content: space-around;
-                    align-items: center;
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
                     width: 100%;
-                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    padding: 16px 20px;
 
-                    .icon {
-                        display: inline-block !important;
-                        color: $white;
-                        padding: 10px 10px 7px;
-                        border-radius: 100%;
-                        background-color: rgba(9, 179, 200, .5);
-                        transition: $dur $ease;
-
-                        &:hover {
-                            background-color: $teal;
-                        }
+                    a {
+                        transform: translate(0px, 20px);
+                        opacity: 0;
                     }
                 }
             }
@@ -73,28 +68,44 @@ section.team-members {
                 img {
                     transform: scale(1.1);
                     z-index: -1;
+                    opacity: .2;
                 }
 
                 .team-member__social--wrap {
                     opacity: 1;
-                    background-color: rgba(0, 0, 0, .3);
+                }
+
+                .team-member__social {
+                    a {
+                        margin-bottom: 5px;
+                        font-weight: 600;
+                        color: $black;
+                        transform: translate(0px, 0px);
+                        opacity: 1;
+                    }
                 }
             }
 
         }
 
         .team-member__name {
-            font-size: 20px;
-            font-weight: 400;
-            margin-bottom: 5px;
-            text-align: center;
+            font-size: 24px;
+            margin-bottom: 2px;
+
+            a {
+                color: $black;
+                transition: $dur-short $ease;
+
+                &:hover {
+                    color: rgba($teal, .7);
+                }
+            }
         }
 
         .team-member__position {
-            font-size: 16px;
+            font-size: $font-size-large;
             font-weight: 400;
-            margin: 5px 0 25px;
-            text-align: center;
+            margin-top: 0;
             color: $gray;
         }
 
