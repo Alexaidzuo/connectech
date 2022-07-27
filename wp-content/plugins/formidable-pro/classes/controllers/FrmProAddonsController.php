@@ -8,9 +8,11 @@ class FrmProAddonsController extends FrmAddonsController {
 	/**
 	 * Render a conditional action button for a specified plugin
 	 *
+	 * @since 4.09.01
+	 *
 	 * @param string $plugin
 	 * @param array|string $upgrade_link_args
-	 * @since 4.09.01
+	 * @return void
 	 */
 	public static function conditional_action_button( $plugin, $upgrade_link_args ) {
 		if ( ! is_callable( 'self::get_addon' ) ) {
@@ -33,10 +35,14 @@ class FrmProAddonsController extends FrmAddonsController {
 	 * Render a conditional action button for an add on
 	 *
 	 * @since 4.09
-	 * @param array $addon
-	 * @param string|false $license_type
-	 * @param string $plan_required
-	 * @param string $upgrade_link
+	 *
+	 * @param array $atts {
+	 *     @type array        $addon
+	 *     @type string|false $license_type
+	 *     @type string       $plan_required
+	 *     @type string       $upgrade_link
+	 * }
+	 * @return void
 	 */
 	public static function show_conditional_action_button( $atts ) {
 		$addon         = $atts['addon'];
@@ -162,82 +168,277 @@ class FrmProAddonsController extends FrmAddonsController {
 	}
 
 	/**
-	 * @since 4.09.01
+	 * Get the timestamp for expiration.
+	 *
+	 * @since 5.4.2
 	 */
-	public static function show_expired_message() {
-		$expired = self::is_license_expired();
-
-		if ( $expired ) {
-			?>
-			<div id="frm-create-footer" class="frm_modal_footer">
-				<?php self::renewal_message(); ?>
-			</div>
-			<?php
-		} elseif ( self::is_license_expiring() ) {
-			?>
-			<div id="frm-create-footer" class="frm_modal_footer">
-				<?php self::expiring_message(); ?>
-			</div>
-			<?php
-		}
+	private static function license_expiration() {
+		$version_info = self::get_primary_license_info();
+		return empty( $version_info['expires'] ) ? '' : $version_info['expires'];
 	}
 
 	/**
-	 * @since 4.07
+	 * Print out an renewal message for admin banner if applicable for expired, expiring, and grace period statuses.
+	 *
+	 * @since 5.4.2
+	 *
+	 * @return bool True if a message is shown.
 	 */
-	public static function renewal_message() {
-		if ( ! self::is_license_expired() ) {
-			self::expiring_message();
-			return;
+	public static function admin_banner() {
+		$status = self::get_license_status();
+		if ( self::should_skip_renewal_message( $status ) ) {
+			return false;
 		}
+
+		$show_close_icon = 'expiring' === $status && current_user_can( 'administrator' );
+
+		if ( 'expired' === $status ) {
+			$wrapper_class   = 'frm-upgrade-bar';
+		} else { // $status is 'expiring' or 'grace'.
+			$wrapper_class   = 'frm-banner-alert ' . ( 'expiring' === $status ? 'frm_warning_style' : 'frm_error_style' );
+		}
+
+		$utc_medium = self::get_utc_medium_for_license_status( $status );
 		?>
-		<div class="frm_error_style" style="text-align:left">
-			<?php FrmAppHelper::icon_by_class( 'frmfont frm_alert_icon' ); ?>
-			&nbsp;
-			<?php esc_html_e( 'Your account has expired', 'formidable' ); ?>
-			<div style="float:right">
-				<a href="<?php echo esc_url( FrmAppHelper::admin_upgrade_link( 'form-expired', 'account/downloads/' ) ); ?>">
-					<?php esc_html_e( 'Renew Now', 'formidable' ); ?>
+		<div class="<?php echo esc_attr( $wrapper_class ); ?>">
+			<?php
+			FrmAppHelper::icon_by_class( 'frmfont frm_alert_icon' );
+			echo '&nbsp;';
+			?>
+			<span><?php self::message_text_for_license_status( true, $status ); ?></span>
+
+			<a href="<?php echo esc_url( FrmAppHelper::admin_upgrade_link( $utc_medium, 'account/downloads/' ) ); ?>">
+				<?php esc_html_e( 'Renew Now', 'formidable-pro' ); ?>
+			</a>
+
+			<?php if ( $show_close_icon ) { ?>
+				<a style="float: right; margin-right: 30px; --primary-color: var(--dark-grey);" href="<?php echo esc_url( self::get_dismiss_renewal_message_action_url() ); ?>">
+					<?php FrmAppHelper::icon_by_class( 'frmfont frm_close_icon', array( 'aria-label' => __( 'Close', 'formidable' ) ) ); ?>
 				</a>
-			</div>
+			<?php } ?>
 		</div>
 		<?php
+
+		return true;
 	}
 
 	/**
-	 * @since 4.08
+	 * Get the active license status.
+	 *
+	 * @since 5.4.2
+	 *
+	 * @return string either 'grace', 'expired', 'expiring', or 'active'.
 	 */
-	public static function expiring_message() {
-		$expiring = self::is_license_expiring();
-		if ( ! $expiring || $expiring < 0 ) {
+	public static function get_license_status() {
+		if ( self::is_license_expired() ) {
+			return self::check_grace_period() ? 'grace' : 'expired';
+		}
+		return self::is_license_expiring() ? 'expiring' : 'active';
+	}
+
+	/**
+	 * Get or echo the message text for active license status.
+	 *
+	 * @since 5.4.2
+	 *
+	 * @param bool         $echo
+	 * @param string|false $status
+	 * @return string|void
+	 */
+	public static function message_text_for_license_status( $echo = false, $status = false ) {
+		if ( ! is_callable( 'FrmAppHelper::clip' ) ) {
+			if ( $echo ) {
+				return;
+			}
+			return '';
+		}
+
+		if ( false === $status ) {
+			$status = self::get_license_status();
+		}
+
+		$echo_function = __CLASS__ . '::print_' . $status;
+
+		if ( ! is_callable( $echo_function ) ) {
+			$echo_function = function() {};
+		}
+
+		return FrmAppHelper::clip( $echo_function, $echo );
+	}
+
+	/**
+	 * Print grace period message
+	 *
+	 * @since 5.4.2
+	 *
+	 * @return void
+	 */
+	public static function print_grace() {
+		echo 'Your account license has expired. Access to pro features will be limited ';
+
+		$grace_period = self::get_grace_period();
+		if ( 0 === $grace_period ) {
+			echo 'soon.';
 			return;
 		}
-		?>
-		<div class="frm_warning_style" style="text-align:left">
-			<?php FrmAppHelper::icon_by_class( 'frmfont frm_alert_icon' ); ?>
-			&nbsp;
-			<?php
-			printf(
-				esc_html(
-					/* translators: %1$s: start HTML tag, %2$s: end HTML tag */
-					_n(
-						'Your form subscription expires in %1$s day%2$s.',
-						'Your form subscription expires in %1$s days%2$s.',
-						intval( $expiring ),
-						'formidable'
-					)
-				),
-				'<strong>' . esc_html( number_format_i18n( $expiring ) ),
-				'</strong>'
-			);
-			?>
-			<div style="float:right">
-				<a href="<?php echo esc_url( FrmAppHelper::admin_upgrade_link( 'form-renew', 'account/downloads/' ) ); ?>">
-					<?php esc_html_e( 'Renew Now', 'formidable' ); ?>
-				</a>
-			</div>
-		</div>
-		<?php
+
+		$time_remaining = FrmAppHelper::human_time_diff( $grace_period );
+		echo 'in <strong>' . esc_html( $time_remaining ) . '</strong>.';
+	}
+
+	/**
+	 * Print expired status message.
+	 *
+	 * @since 5.4.2
+	 *
+	 * @return void
+	 */
+	public static function print_expired() {
+		esc_html_e( 'Your account license has expired and is no longer qualified for important security updates.', 'formidable-pro' );
+	}
+
+	/**
+	 * Print expiring status message.
+	 *
+	 * @since 5.4.2
+	 *
+	 * @return void
+	 */
+	public static function print_expiring() {
+		$expires  = self::license_expiration();
+		$expiring = FrmAppHelper::human_time_diff( $expires );
+
+		printf(
+			/* translators: %s: Duration until license expires (ie 5 days, 1 hour) */
+			esc_html__( 'Your account license expires in %s.', 'formidable-pro' ),
+			'<strong>' . esc_html( $expiring ) . '</strong>'
+		);
+	}
+
+	/**
+	 * @since 5.4.2
+	 *
+	 * @param string $status
+	 * @return bool
+	 */
+	private static function should_skip_renewal_message( $status ) {
+		// No banner for active status.
+		if ( 'active' === $status ) {
+			return true;
+		}
+
+		// Exit early if the user has dismissed the expiring license warning within the last day.
+		if ( 'expiring' === $status ) {
+			$dismissed_renewal_message = get_option( 'frm_dismissed_renewal_message' );
+			if ( false !== $dismissed_renewal_message && time() - (int) $dismissed_renewal_message < DAY_IN_SECONDS ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @since 5.4.2
+	 *
+	 * @return string
+	 */
+	private static function get_dismiss_renewal_message_action_url() {
+		return wp_nonce_url( admin_url( 'admin-ajax.php?action=frm_dismiss_renewal_message' ) );
+	}
+
+	/**
+	 * Dismiss renewal message via AJAX request.
+	 *
+	 * @return void
+	 */
+	public static function dismiss_renewal_message() {
+		FrmAppHelper::permission_check( 'administrator' );
+
+		if ( ! wp_verify_nonce( FrmAppHelper::simple_get( '_wpnonce', '', 'sanitize_text_field' ) ) ) {
+			$frm_settings = FrmAppHelper::get_settings();
+			die( esc_html( $frm_settings->admin_permission ) );
+		}
+
+		update_option( 'frm_dismissed_renewal_message', time(), 'no' );
+		wp_safe_redirect( self::get_after_dismiss_redirect_url() );
+	}
+
+	/**
+	 * @since 5.4.2
+	 *
+	 * @return string URL to redirect to after dismissing renewal message.
+	 */
+	private static function get_after_dismiss_redirect_url() {
+		$referer = FrmAppHelper::get_server_value( 'HTTP_REFERER' );
+		if ( ! $referer ) {
+			return self::get_default_dismiss_redirect_url();
+		}
+
+		$parsed = parse_url( $referer );
+		if ( ! is_array( $parsed ) || empty( $parsed['query'] ) || empty( $parsed['path'] ) ) {
+			return self::get_default_dismiss_redirect_url();
+		}
+
+		$parts = explode( '/', $parsed['path'] );
+		$path  = end( $parts );
+		if ( ! in_array( $path, array( 'edit.php', 'admin.php' ), true ) ) {
+			return self::get_default_dismiss_redirect_url();
+		}
+
+		$query = $parsed['query'];
+		return admin_url( $path . '?' . $query );
+	}
+
+	/**
+	 * @since 5.4.2
+	 *
+	 * @return string
+	 */
+	private static function get_default_dismiss_redirect_url() {
+		return admin_url( 'admin.php?page=formidable' );
+	}
+
+	/**
+	 * @param string $status
+	 * @return string
+	 */
+	public static function get_utc_medium_for_license_status( $status ) {
+		return 'expiring' === $status ? 'form-renew' : 'form-expired';
+	}
+
+	/**
+	 * @since 5.4.2
+	 *
+	 * @return bool True if within grace period.
+	 */
+	private static function check_grace_period() {
+		$grace_period = self::get_grace_period();
+		return 0 === $grace_period || time() < $grace_period;
+	}
+
+	/**
+	 * @since 5.4.2
+	 *
+	 * @return int
+	 */
+	private static function get_grace_period() {
+		$info = self::get_primary_license_info();
+
+		foreach ( array( 'grace', 'expires' ) as $key ) {
+			if ( ! isset( $info[ $key ] ) || ! is_numeric( $info[ $key ] ) ) {
+				return 0;
+			}
+		}
+
+		$grace   = intval( $info['grace'] );
+		$expires = intval( $info['expires'] );
+
+		if ( $grace < $expires ) {
+			return 0;
+		}
+
+		return $grace;
 	}
 
 	/**
@@ -277,5 +478,69 @@ class FrmProAddonsController extends FrmAddonsController {
 		echo json_encode( __( 'Your plugins have been installed and activated.', 'formidable' ) );
 
 		wp_die();
+	}
+
+	/**
+	 * @since 5.4.2
+	 *
+	 * @return bool
+	 */
+	public static function is_expired_outside_grace_period() {
+		return self::is_license_expired() && ! self::check_grace_period();
+	}
+
+	/**
+	 * @since 5.4.2
+	 *
+	 * @return bool
+	 */
+	public static function pro_is_behind_latest_version() {
+		$version = FrmProDb::$plug_version;
+		$addons = self::get_primary_license_info();
+
+		if ( ! is_callable( 'self::get_pro_from_addons' ) ) {
+			return false;
+		}
+
+		$pro = self::get_pro_from_addons( $addons );
+		if ( ! $pro ) {
+			return false;
+		}
+
+		return version_compare( $version, $pro['version'], '<' );
+	}
+
+	/**
+	 * @since 4.09.01
+	 * @deprecated x.x
+	 *
+	 * @return void
+	 */
+	public static function show_expired_message() {
+		_deprecated_function( __METHOD__, 'x.x' );
+	}
+
+	/**
+	 * @since 4.08
+	 * @deprecated x.x
+	 *
+	 * @return void
+	 */
+	public static function expiring_message() {
+		_deprecated_function( __METHOD__, 'x.x', 'FrmProAddonsController::admin_banner' );
+		self::admin_banner();
+	}
+
+	/**
+	 * @since 4.07
+	 * @deprecated x.x
+	 *
+	 * @return void
+	 */
+	public static function renewal_message() {
+		// This function gets called from lite for the frm_page_footer action.
+		// This function does nothing rather than call admin_banner to avoid classes like "frm-banner-alert" and "frm-upgrade-bar"
+		// from appearing in the footer.
+		// _deprecated_function isn't called as this function gets called from old versions of lite.
 	}
 }

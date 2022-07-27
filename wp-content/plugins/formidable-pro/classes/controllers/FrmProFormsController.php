@@ -293,10 +293,14 @@ class FrmProFormsController {
     /**
      * Remove the noallow class on pro fields
 	 *
+	 * @param string $class_name
      * @return string
      */
-    public static function noallow_class() {
-        return '';
+    public static function noallow_class( $class_name ) {
+		if ( FrmProAddonsController::is_expired_outside_grace_period() ) {
+			return $class_name . ' frm_show_upgrade frm_show_expired_modal';
+		}
+		return '';
     }
 
 	/**
@@ -396,7 +400,16 @@ class FrmProFormsController {
 		}
 	}
 
+	/**
+	 * Maybe add a link wrapper around field HTML to turn it into an active button.
+	 *
+	 * @param string $field_type
+	 * @return string
+	 */
 	public static function add_field_link( $field_type ) {
+		if ( FrmProAddonsController::is_expired_outside_grace_period() ) {
+			return $field_type;
+		}
 		return '<a href="#" class="frm_add_field">' . $field_type . '</a>';
     }
 
@@ -1102,6 +1115,10 @@ class FrmProFormsController {
 			$strings[] = 'rootline_titles';
 		}
 
+		if ( ! empty( $form->options['start_over'] ) && isset( $form->options['start_over_label'] ) ) {
+			$strings[] = 'start_over_label';
+		}
+
 		return $strings;
 	}
 
@@ -1229,7 +1246,34 @@ class FrmProFormsController {
 			wp_send_json_error();
 		}
 
-		wp_send_json_success( FrmFormsController::show_form( $form ) );
+		$form_output  = FrmFormsController::show_form( $form );
+		$form_output  = str_replace( ' frm_logic_form ', '', $form_output );
+		$form_output .= self::get_form_ajax_extra_scripts();
+		wp_send_json_success( $form_output );
+	}
+
+	/**
+	 * Gets extra scripts when loading form via AJAX.
+	 *
+	 * @since 5.4.2
+	 *
+	 * @return string
+	 */
+	private static function get_form_ajax_extra_scripts() {
+		ob_start();
+		?>
+		<script type="text/javascript">
+			<?php FrmProFormsHelper::load_dropzone_js( $GLOBALS['frm_vars'] ); ?>
+		</script>
+		<?php
+		$output       = ob_get_clean();
+		$has_dropzone = strpos( $output, '__frmDropzone=' );
+		if ( $has_dropzone ) {
+			$output  = str_replace( '__frmDropzone=', '__frmAjaxDropzone=', $output );
+			$js_file = '<script src="' . FrmProAppHelper::plugin_url() . '/js/dropzone.min.js?ver=5.9.3" id="dropzone-js"></script>'; // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
+			$output  = $js_file . $output;
+		}
+		return $output;
 	}
 
 	/**

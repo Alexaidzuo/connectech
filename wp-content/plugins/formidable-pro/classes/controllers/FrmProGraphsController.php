@@ -2012,8 +2012,31 @@ class FrmProGraphsController {
 
 			$displayed_value = self::convert_date_for_graph_display( $value );
 
-		} elseif ( is_object( $field ) && ! is_array( $value ) ) {
+		} elseif ( is_object( $field ) ) {
+			$displayed_value = self::get_displayed_value_for_specific_fields( $value, $field );
+		} else {
+			$displayed_value = $value;
+		}
 
+		$displayed_value = apply_filters( 'frm_graph_value', $displayed_value, $field );
+
+		if ( is_array( $displayed_value ) ) {
+			$displayed_value = reset( $displayed_value );
+		}
+
+		return $displayed_value;
+	}
+
+	/**
+	 * Gets displayed value for specific fields.
+	 *
+	 * @since 5.4.2
+	 *
+	 * @param mixed  $value Field value.
+	 * @param object $field Field object.
+	 */
+	private static function get_displayed_value_for_specific_fields( $value, $field ) {
+		if ( ! is_array( $value ) ) {
 			if ( $field->type === 'date' ) {
 				$displayed_value = self::convert_date_for_graph_display( $value );
 			} elseif ( ! empty( $field->field_options['separate_value'] ) || FrmField::is_option_true( $field, 'other' ) ) {
@@ -2031,14 +2054,11 @@ class FrmProGraphsController {
 			} else {
 				$displayed_value = ucfirst( $value );
 			}
+		} elseif ( 'name' === $field->type ) {
+			$field_obj       = FrmFieldFactory::get_field_object( $field );
+			$displayed_value = $field_obj->get_display_value( $value );
 		} else {
 			$displayed_value = $value;
-		}
-
-		$displayed_value = apply_filters( 'frm_graph_value', $displayed_value, $field );
-
-		if ( is_array( $displayed_value ) ) {
-			$displayed_value = reset( $displayed_value );
 		}
 
 		return $displayed_value;

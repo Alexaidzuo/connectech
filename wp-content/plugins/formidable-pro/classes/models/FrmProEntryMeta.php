@@ -838,10 +838,13 @@ class FrmProEntryMeta {
 		} else if ( $field->field_options['post_field'] != 'post_category' ) {
 			// If field is a non-category post field
 			$get_field = 'e.id';
-			$get_table = $wpdb->posts . ' p INNER JOIN ' . $wpdb->prefix . 'frm_items e ON p.ID=e.post_id';
+			$get_table = $wpdb->prefix . 'frm_items e LEFT OUTER JOIN ' . $wpdb->posts . ' p ON e.post_id=p.ID';
 
-			$where[ 'p.' . sanitize_title( $field->field_options['post_field'] ) . $operator ] = $value;
-
+			$where[] = array(
+				'or'                 => 1,
+				'p.' . sanitize_title( $field->field_options['post_field'] ) . $operator => $value,
+				'e.name' . $operator => $value,
+			);
 		} else {
 			// If field is a category field
 			//TODO: Make this work

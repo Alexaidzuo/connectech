@@ -73,5 +73,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</label>
 		<?php
 	}
+
+	/**
+	 * Fires after the email attachment setting row.
+	 *
+	 * @since 5.4.2
+	 *
+	 * @param array $args {
+	 *     The args.
+	 *
+	 *     @type FrmFormAction $form_action Form action object.
+	 *     @type array         $pass_args   Pass args. See {@see FrmProFormActionsController::add_file_attachment_field()}.
+	 * }
+	 */
+	do_action( 'frm_pro_after_email_attachment_row', compact( 'form_action', 'pass_args' ) );
 	?>
 <!-- Add email attachment row end. -->

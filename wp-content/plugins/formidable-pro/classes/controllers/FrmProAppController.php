@@ -465,6 +465,9 @@ class FrmProAppController {
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public static function admin_init() {
 		if ( FrmAppHelper::is_admin_page( 'formidable-entries' ) && 'destroy_all' === FrmAppHelper::get_param( 'frm_action' ) ) {
 			FrmProEntriesController::destroy_all();
@@ -484,8 +487,41 @@ class FrmProAppController {
 			}
 		}
 
+		self::maybe_hide_screen_options();
 		self::maybe_load_admin_js();
 		self::remove_upsells();
+	}
+
+	/**
+	 * @since 5.4.2
+	 *
+	 * @return void
+	 */
+	private static function maybe_hide_screen_options() {
+		if ( ! self::on_formidable_page_with_screen_options() ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'administrator' ) || 'expiring' !== FrmProAddonsController::get_license_status() ) {
+			return;
+		}
+
+		// Disable screen options tab on Forms, Entries, and Views lists when displaying grace period warning because it gets in the way.
+		add_filter( 'screen_options_show_screen', '__return_false' );
+	}
+
+	/**
+	 * @since 5.4.2
+	 *
+	 * @return bool
+	 */
+	private static function on_formidable_page_with_screen_options() {
+		if ( FrmAppHelper::is_admin_page( 'formidable-entries' ) || FrmAppHelper::is_admin_page( 'formidable' ) ) {
+			return true;
+		}
+
+		global $pagenow;
+		return 'edit.php' === $pagenow && 'frm_display' === FrmAppHelper::simple_get( 'post_type' );
 	}
 
 	/**
@@ -502,6 +538,10 @@ class FrmProAppController {
 		if ( in_array( $action, array( 'edit', 'duplicate' ), true ) ) {
 			self::register_and_enqueue_admin_script( 'builder' );
 			self::register_and_enqueue_style( 'builder' );
+
+			if ( FrmProAddonsController::is_expired_outside_grace_period() ) {
+				self::register_and_enqueue_admin_script( 'expired', array( 'formidable_dom' ) );
+			}
 		} elseif ( 'settings' === $action ) {
 			self::register_and_enqueue_admin_script( 'settings' );
 		} elseif ( self::on_form_listing_page() ) {

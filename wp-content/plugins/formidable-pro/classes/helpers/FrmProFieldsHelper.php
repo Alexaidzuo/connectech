@@ -1927,12 +1927,19 @@ class FrmProFieldsHelper {
 			$page_numbers['next_page'] = FrmAppHelper::get_param( 'frm_page_order_' . $atts['form_id'], false, 'get', 'absint' );
 
 			// If next_page is zero, assume user clicked "Save Draft" on last page of form
-			if ( $page_numbers['next_page'] == 0 ) {
-				$page_numbers['next_page'] = count( $atts['fields'] );
+			if ( $page_numbers['next_page'] === 0 ) {
+				foreach ( $atts['fields'] as $field ) {
+					if ( $field->type !== 'break' ) {
+						continue;
+					}
+					$last_page = $field->field_order;
+				}
+				// assign the last page to prev_page
+				$page_numbers['prev_page'] = $last_page;
+			} else {
+				$page_numbers['set_prev']  = $page_numbers['prev_page'];
+				$page_numbers['prev_page'] = $page_numbers['next_page'] - 1;
 			}
-
-			$page_numbers['prev_page'] = $page_numbers['next_page'] - 1;
-			$page_numbers['set_prev']  = $page_numbers['prev_page'];
 		}
 
 		if ( $atts['error'] ) {

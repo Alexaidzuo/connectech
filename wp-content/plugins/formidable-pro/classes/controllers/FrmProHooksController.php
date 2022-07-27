@@ -8,6 +8,8 @@ class FrmProHooksController {
 
 	/**
 	 * @since 3.0
+	 *
+	 * @return void
 	 */
 	public static function load_pro() {
 		$frmedd_update = FrmProAppHelper::get_updater();
@@ -39,6 +41,9 @@ class FrmProHooksController {
 
 	/**
 	 * @since 3.0
+	 *
+	 * @param array<string>
+	 * @return array<string>
 	 */
 	public static function load_controllers( $controllers ) {
 		unset( $controllers[0] ); // don't load hooks in free again
@@ -47,12 +52,18 @@ class FrmProHooksController {
 
 	/**
 	 * @since 3.0
+	 *
+	 * @param array<string> $controllers
+	 * @return array<string>
 	 */
 	public static function add_hook_controller( $controllers ) {
 		$controllers[] = 'FrmProHooksController';
 		return $controllers;
 	}
 
+	/**
+	 * @return void
+	 */
 	public static function load_hooks() {
 		global $wp_version;
 
@@ -240,10 +251,6 @@ class FrmProHooksController {
 		add_filter( 'frm_media_icon', 'FrmProAppController::whitelabel_media_icon' );
 		add_filter( 'frm_admin_script_strings', 'FrmProAppController::admin_js_strings' );
 
-		// Addons Controller
-		add_action( 'frm_overlay_footer', 'FrmProAddonsController::show_expired_message' );
-		add_action( 'frm_page_footer', 'FrmProAddonsController::renewal_message' );
-
 		// Entries Controller
 		add_action( 'frm_after_show_entry', 'FrmProEntriesController::show_comments' );
 		add_filter( 'frm_field_column_is_sortable', 'FrmProEntriesController::field_column_is_sortable', 10, 2 );
@@ -287,6 +294,7 @@ class FrmProHooksController {
 		add_filter( 'frm_single_input_fields', 'FrmProFieldsController::single_input_fields' );
 		add_filter( 'frm_radio_display_format_options', 'FrmProFieldsController::change_radio_display_format_options', 5 );
 		add_filter( 'frm_radio_display_format_args', 'FrmProFieldsController::change_radio_display_format_args', 5, 2 );
+		add_action( 'frm_before_create_field', 'FrmProFieldsController::before_create_field', 1 );
 
 		// Fields Helper
 		add_filter( 'frm_show_custom_html', 'FrmProFieldsHelper::show_custom_html', 10, 2 );
@@ -399,6 +407,10 @@ class FrmProHooksController {
 		// Summary field
 		add_action( 'frm_before_create_field', 'FrmProFieldSummary::maybeAddBreakFieldBeforeSummary', 10, 2 );
 
+		// Site Health
+		add_filter( 'debug_information', 'FrmProSiteHealthController::debug_information' );
+		add_filter( 'site_status_tests', 'FrmProSiteHealthController::site_status_tests' );
+
 		// Applications
 		add_action( 'frm_applications_assets', 'FrmProApplicationsController::load_assets_for_applications_index' );
 		add_action( 'frm_application_data_keys', 'FrmProApplicationsController::application_data_keys' );
@@ -445,6 +457,7 @@ class FrmProHooksController {
 	public static function load_ajax_hooks() {
 		// Addons Controller
 		add_action( 'wp_ajax_frm_multiple_addons', 'FrmProAddonsController::ajax_multiple_addons' );
+		add_action( 'wp_ajax_frm_dismiss_renewal_message', 'FrmProAddonsController::dismiss_renewal_message' );
 
 		// Entries Controller
 		add_action( 'wp_ajax_frm_create_post_entry', 'FrmProEntriesController::create_post_entry' );

@@ -229,12 +229,24 @@ class FrmProEntryFormatter extends FrmEntryFormatter {
 			foreach ( $field_values as $child_field_id => $child_field_info ) {
 				$child_field_info->prepare_displayed_value( $this->atts );
 
+				if ( isset( $this->table_generator ) ) {
+					$this->table_generator->is_child = $is_repeater;
+				}
+
 				$this->add_field_value_to_content( $child_field_info, $content );
+			}
+
+			if ( isset( $this->table_generator ) ) {
+				$this->table_generator->is_child = false;
 			}
 
 			if ( $content !== $pre_content && $is_repeater ) {
 				$this->add_separator( $content );
 			}
+		}
+
+		if ( isset( $this->table_generator ) ) {
+			$this->table_generator->is_child = false;
 		}
 	}
 
@@ -248,7 +260,7 @@ class FrmProEntryFormatter extends FrmEntryFormatter {
 		if ( $this->format === 'plain_text_block' ) {
 			$content .= "\r\n";
 		} else if ( $this->format === 'table' ) {
-			$content .= $this->table_generator->generate_single_cell_table_row( '&nbsp;' );
+			$content .= $this->table_generator->generate_single_cell_table_row( '' );
 		}
 	}
 

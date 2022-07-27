@@ -276,6 +276,8 @@ function frmProFormJS() {
 					if ( this.options.uploadMultiple === false ) {
 						this.disable();
 					}
+
+					frmFrontForm.validateFormSubmit( file.previewElement.closest( 'form' ) );
 				});
 
 				this.on( 'successmultiple', function( files, response ) {
@@ -283,6 +285,8 @@ function frmProFormJS() {
 					for ( var m = 0; m < files.length; m++ ) {
 						jQuery( files[ m ].previewElement ).append( getHiddenUploadHTML( uploadFields[ i ], mediaIDs[ m ], fieldName ) );
 					}
+
+					frmFrontForm.validateFormSubmit( files[0].previewElement.closest( 'form' ) );
 				});
 
 				this.on( 'complete', function( file ) {
@@ -291,27 +295,29 @@ function frmProFormJS() {
 					processesRunning--;
 					frmFrontForm.removeSubmitLoading( form, 'enable', processesRunning );
 
-					if ( typeof file.mediaID !== 'undefined' ) {
-						if ( uploadFields[ i ].uploadMultiple ) {
-							jQuery( file.previewElement ).append( getHiddenUploadHTML( uploadFields[ i ], file.mediaID, fieldName ) );
+					if ( typeof file.mediaID === 'undefined' ) {
+						return;
+					}
+
+					if ( uploadFields[ i ].uploadMultiple ) {
+						jQuery( file.previewElement ).append( getHiddenUploadHTML( uploadFields[ i ], file.mediaID, fieldName ) );
+					}
+
+					// Add download link to the file
+					fileName = file.previewElement.querySelectorAll( '[data-dz-name]' );
+					for ( var _i = 0, _len = fileName.length; _i < _len; _i++ ) {
+						node = fileName[ _i ];
+						if ( file.accessible ) {
+							node.innerHTML = '<a href="' + file.url + '" target="_blank" rel="noopener">' + file.name + '</a>';
+						} else {
+							node.innerHTML = file.name;
 						}
 
-						// Add download link to the file
-						fileName = file.previewElement.querySelectorAll( '[data-dz-name]' );
-						for ( var _i = 0, _len = fileName.length; _i < _len; _i++ ) {
-							node = fileName[ _i ];
-							if ( file.accessible ) {
-								node.innerHTML = '<a href="' + file.url + '" target="_blank" rel="noopener">' + file.name + '</a>';
-							} else {
-								node.innerHTML = file.name;
-							}
-
-							if ( file.ext ) {
+						if ( file.ext ) {
+							img = file.previewElement.querySelector( '.dz-image img' );
+							if ( null !== img ) {
 								thumbnail = maybeGetExtensionThumbnail( file.ext );
-								img = file.previewElement.querySelector( '.dz-image img' );
-								if ( false !== thumbnail && null !== img ) {
-									img.setAttribute( 'src', thumbnail );
-								}
+								img.setAttribute( 'src', thumbnail );
 							}
 						}
 					}
@@ -326,7 +332,21 @@ function frmProFormJS() {
 					if ( false !== thumbnail ) {
 						jQuery( file.previewElement ).find( '.dz-image img' ).attr( 'src', thumbnail );
 					}
+
+					clearErrorsOnUpload( file.previewElement );
 				});
+
+				function clearErrorsOnUpload( fileElement ) {
+					var container = fileElement.closest( '.frm_form_field' );
+					container.classList.remove( 'frm_blank_field', 'has-error' );
+					container.querySelectorAll( '.form-field .frm_error, .frm_error_style' ).forEach(
+						function( error ) {
+							if ( error.parentNode ) {
+								error.parentNode.removeChild( error );
+							}
+						}
+					);
+				}
 
 				this.on( 'removedfile', function( file ) {
 					var fileCount = this.files.length;
@@ -375,12 +395,10 @@ function frmProFormJS() {
 	function maybeGetExtensionThumbnail( ext ) {
 		if ( 'pdf' === ext ) {
 			return getProPluginUrl() + '/images/pdf.svg';
-		} else if ( -1 !== ext.indexOf( 'doc' ) ) {
-			return getProPluginUrl() + '/images/doc.svg';
 		} else if ( -1 !== ext.indexOf( 'xls' ) ) {
 			return getProPluginUrl() + '/images/xls.svg';
 		}
-		return false;
+		return getProPluginUrl() + '/images/doc.svg';
 	}
 
 	function getProPluginUrl() {
@@ -5832,6 +5850,7 @@ function frmProFormJS() {
 
 				minHeight = getElementHeight( element );
 				element.style.overflowY = 'hidden';
+				element.style.transition = 'none';
 
 				callback = function() {
 					adjustHeight( element, minHeight );
@@ -5963,6 +5982,13 @@ function frmProFormJS() {
 						return;
 					}
 					jQuery( formEl.closest( '.frm_forms' ) ).replaceWith( response.data );
+
+					if ( 'undefined' !== typeof __frmAjaxDropzone ) {
+						window.__frmDropzone = __frmAjaxDropzone;
+					}
+
+					checkFieldsOnPage( 'frm_form_' + formId + '_container' );
+
 					triggerCompletedEvent( formId );
 				},
 				function( response ) {

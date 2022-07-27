@@ -1835,6 +1835,28 @@ class FrmProFieldsController {
 	}
 
 	/**
+	 * Prevent field creation when license is expired.
+	 *
+	 * @since 5.4.2
+	 *
+	 * @param string $field_type
+	 * @return void
+	 */
+	public static function before_create_field( $field_type ) {
+		if ( ! FrmProAddonsController::is_expired_outside_grace_period() ) {
+			return;
+		}
+
+		$pro_fields            = FrmField::pro_field_selection();
+		$field_type_is_allowed = ! array_key_exists( $field_type, $pro_fields );
+
+		if ( ! $field_type_is_allowed ) {
+			// Die early instead of adding a pro field for an expired license.
+			wp_die( -1 );
+		}
+	}
+
+	/**
 	 * @deprecated 4.0
 	 */
 	public static function populate_calc_dropdown() {
